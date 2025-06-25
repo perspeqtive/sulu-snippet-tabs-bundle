@@ -8,6 +8,9 @@ use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<TabConfig>
+ */
 class TabConfigCollection implements IteratorAggregate
 {
     /**

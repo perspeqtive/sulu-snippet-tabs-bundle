@@ -51,6 +51,15 @@ class RegisterTabsCompilerPass implements CompilerPassInterface
         return $container->getParameter('sulu_snippet_tabs.configuration');
     }
 
+    /**
+     * @param array{
+     *     snippet_type: string,
+     *     tabs: array<string, array{
+     *         title: string,
+     *         form_key: string,
+     *         order: int
+     * }>} $typeConfiguration
+     */
     private function addConfigToContainer(array $typeConfiguration, ContainerBuilder $container): void
     {
         $formKeys = [];
@@ -60,6 +69,9 @@ class RegisterTabsCompilerPass implements CompilerPassInterface
         $this->addDefinitionForExtension($container, $typeConfiguration['snippet_type'], $formKeys);
     }
 
+    /**
+     * @param string[] $formKeys
+     */
     private function addDefinitionForExtension(ContainerBuilder $container, string $snippetType, array $formKeys): void
     {
         $container->setDefinition(

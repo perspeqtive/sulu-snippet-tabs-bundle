@@ -6,8 +6,10 @@ namespace PERSPEQTIVE\SuluSnippetTabsBundle\Extension;
 
 use Exception;
 use PHPCR\NodeInterface;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FieldMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadataLoaderInterface;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\ItemMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\SectionMetadata;
 use Sulu\Component\Content\Extension\AbstractExtension;
 use Sulu\Component\Content\Extension\ExportExtensionInterface;
@@ -27,6 +29,9 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
      */
     protected $properties = [];
 
+    /**
+     * @param string[] $forms
+     */
     public function __construct(
         private readonly FormMetadataLoaderInterface $formMetaDataLoader,
         string $name,
@@ -36,13 +41,16 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
         $this->additionalPrefix = $name;
     }
 
+    /**
+     * @param array<string|array|bool|int|float|null> $data
+     */
     public function save(NodeInterface $node, $data, $webspaceKey, $languageCode): void
     {
         if ($this->isResponsible($node) === false) {
             return;
         }
         $properties = $this->getProperties($languageCode);
-        $this->setLanguageCode($languageCode, 'i18n', null);
+        $this->setLanguageCode($languageCode, 'i18n', '');
 
         foreach ($properties as $name) {
             if (isset($data[$name]) && is_array($data[$name])) {
@@ -132,6 +140,9 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
         return true;
     }
 
+    /**
+     * @return string[]
+     */
     private function getProperties(?string $locale): array
     {
         if (empty($this->properties)) {
@@ -141,6 +152,11 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
         return $this->properties;
     }
 
+    /**
+     * @param array<SectionMetadata|FieldMetadata|ItemMetadata> $structure
+     *
+     * @return string[]
+     */
     private function extractProperties(array $structure): array
     {
         if ($structure === []) {
@@ -150,14 +166,13 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
 
         foreach ($structure as $item) {
             if ($item instanceof SectionMetadata === true) {
-                $properties[] = $this->extractProperties($item->getItems() ?? []);
+                $properties[] = $this->extractProperties($item->getItems());
                 continue;
             }
             $properties[] = [$this->extractPropertyName($item->getName())];
         }
-        $properties = array_merge(...$properties);
 
-        return $properties;
+        return array_merge(...$properties);
     }
 
     private function extractPropertyName(string $name): string
@@ -165,12 +180,15 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
         return basename($name);
     }
 
+    /**
+     * @return string[]
+     */
     private function prepareProperties(?string $locale): array
     {
         $properties = [];
         foreach ($this->forms as $form) {
-            /** @var FormMetadata $structure */
-            $structure = $this->formMetaDataLoader->getMetadata($form, $locale ?? 'de');
+            /** @var ?FormMetadata $structure */
+            $structure = $this->formMetaDataLoader->getMetadata($form, $locale ?? 'de', []);
             $properties[] = $this->extractProperties($structure?->getItems() ?? []);
         }
 

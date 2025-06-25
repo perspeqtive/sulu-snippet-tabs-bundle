@@ -10,6 +10,9 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class ConfiguredSnippetTabExtensionDefinitionBuilder
 {
+    /**
+     * @param string[] $formKeys
+     */
     public function build(ContainerBuilder $container, string $snippetType, array $formKeys): Definition
     {
         $definition = new Definition(SnippetTabExtension::class);
