@@ -22,7 +22,6 @@ use function json_encode;
 
 class SnippetTabExtension extends AbstractExtension implements ExportExtensionInterface
 {
-
     /**
      * @var string[]
      */
@@ -30,10 +29,9 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
 
     public function __construct(
         private readonly FormMetadataLoaderInterface $formMetaDataLoader,
-        string                                       $name,
-        private readonly array                       $forms = [],
-    )
-    {
+        string $name,
+        private readonly array $forms = [],
+    ) {
         $this->name = $name;
         $this->additionalPrefix = $name;
     }

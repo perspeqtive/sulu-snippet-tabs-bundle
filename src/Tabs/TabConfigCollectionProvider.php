@@ -6,11 +6,9 @@ namespace PERSPEQTIVE\SuluSnippetTabsBundle\Tabs;
 
 readonly class TabConfigCollectionProvider
 {
-
-
     /**
      * @param array<string, array{
-     *     parent_type: string,
+     *     snippet_type: string,
      *     tabs: array<string, array{
      *         title: string,
      *         form_key: string,
@@ -18,24 +16,26 @@ readonly class TabConfigCollectionProvider
      *     }>
      * }> $tabConfigs
      */
-    public function __construct(private array $tabConfigs) {
+    public function __construct(private array $tabConfigs)
+    {
     }
 
-    public function getTabConfigCollection(): TabConfigCollection {
+    public function getTabConfigCollection(): TabConfigCollection
+    {
         $collection = new TabConfigCollection();
-        foreach($this->tabConfigs as $snippetTypeConfig) {
-            foreach($snippetTypeConfig['tabs'] as $tabConfig) {
+        foreach ($this->tabConfigs as $snippetTypeConfig) {
+            foreach ($snippetTypeConfig['tabs'] as $tabConfig) {
                 $collection->add(
                     new TabConfig(
                         $tabConfig['title'],
-                        $snippetTypeConfig['parent_type'],
+                        $snippetTypeConfig['snippet_type'],
                         $tabConfig['order'],
                         $tabConfig['form_key'],
-                    )
+                    ),
                 );
             }
         }
+
         return $collection;
     }
-
 }

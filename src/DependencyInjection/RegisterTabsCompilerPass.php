@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace PERSPEQTIVE\SuluSnippetTabsBundle\DependencyInjection;
 
 use PERSPEQTIVE\SuluSnippetTabsBundle\DefinitionBuilder\ConfiguredSnippetTabExtensionDefinitionBuilder;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class RegisterTabsCompilerPass implements CompilerPassInterface
 {
-
     private ConfiguredSnippetTabExtensionDefinitionBuilder $configuredSnippetTabExtensionDefinitionBuilder;
 
     public function __construct()

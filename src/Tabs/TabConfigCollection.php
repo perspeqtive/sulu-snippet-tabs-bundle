@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace PERSPEQTIVE\SuluSnippetTabsBundle\Tabs;
 
+use ArrayIterator;
+use IteratorAggregate;
 use Traversable;
 
-class TabConfigCollection implements \IteratorAggregate
+class TabConfigCollection implements IteratorAggregate
 {
-
     /**
      * @var TabConfig[]
      */
     private array $tabs = [];
 
-    public function add(TabConfig $tab): void {
+    public function add(TabConfig $tab): void
+    {
         $this->tabs[] = $tab;
     }
 
@@ -23,6 +25,6 @@ class TabConfigCollection implements \IteratorAggregate
      */
     public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->tabs);
+        return new ArrayIterator($this->tabs);
     }
 }

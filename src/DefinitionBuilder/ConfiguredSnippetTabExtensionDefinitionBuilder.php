@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class ConfiguredSnippetTabExtensionDefinitionBuilder
 {
-
     public function build(ContainerBuilder $container, string $snippetType, array $formKeys): Definition
     {
         $definition = new Definition(SnippetTabExtension::class);
@@ -18,6 +17,7 @@ class ConfiguredSnippetTabExtensionDefinitionBuilder
         $definition->setArgument('$name', $snippetType);
         $definition->setArgument('$forms', $formKeys);
         $definition->addTag('sulu.structure.extension');
+
         return $definition;
     }
 }

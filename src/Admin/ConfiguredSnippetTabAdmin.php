@@ -17,12 +17,14 @@ use Sulu\Bundle\SnippetBundle\Document\SnippetDocument;
 use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 
+use function str_ends_with;
+
 class ConfiguredSnippetTabAdmin extends Admin
 {
     public function __construct(
         private readonly ViewBuilderFactoryInterface $viewBuilderFactory,
-        private readonly SecurityCheckerInterface    $securityChecker,
-        private readonly TabConfigCollectionProvider $tabConfigCollectionProvider
+        private readonly SecurityCheckerInterface $securityChecker,
+        private readonly TabConfigCollectionProvider $tabConfigCollectionProvider,
     ) {
     }
 
@@ -35,17 +37,17 @@ class ConfiguredSnippetTabAdmin extends Admin
 
         $tabConfigCollection = $this->tabConfigCollectionProvider->getTabConfigCollection();
         /** @var ResourceTabViewBuilder $resourceViewBuilder */
-        foreach($editResourceCollection->all() as $resourceViewBuilder) {
-            foreach($tabConfigCollection as $tabConfig) {
+        foreach ($editResourceCollection->all() as $resourceViewBuilder) {
+            foreach ($tabConfigCollection as $tabConfig) {
                 $viewCollection->add(
-                    $this->addTabView($resourceViewBuilder, $tabConfig)
+                    $this->addTabView($resourceViewBuilder, $tabConfig),
                 );
             }
         }
-
     }
 
-    private function addTabView(ResourceTabViewBuilder $viewBuilder, TabConfig $tabConfig): FormViewBuilderInterface {
+    private function addTabView(ResourceTabViewBuilder $viewBuilder, TabConfig $tabConfig): FormViewBuilderInterface
+    {
         $formView = $this->viewBuilderFactory->createFormViewBuilder($viewBuilder->getName() . '.' . $tabConfig->formKey, '/' . $tabConfig->getUrl());
 
         $formView->setResourceKey(SnippetDocument::RESOURCE_KEY)
@@ -60,21 +62,21 @@ class ConfiguredSnippetTabAdmin extends Admin
         return $formView;
     }
 
-    private function findAllEditResourceViews(ViewCollection $viewCollection): ViewCollection {
+    private function findAllEditResourceViews(ViewCollection $viewCollection): ViewCollection
+    {
         $result = new ViewCollection();
-        foreach($viewCollection->all() as $viewBuilder) {
+        foreach ($viewCollection->all() as $viewBuilder) {
             $view = $viewBuilder->getView();
-            if(
-                $view->getType() !== ResourceTabViewBuilder::TYPE ||
-                $view->getOption('resourceKey') !== SnippetDocument::RESOURCE_KEY ||
-                str_ends_with($view->getName(), '.edit') === false
+            if (
+                $view->getType() !== ResourceTabViewBuilder::TYPE
+                || $view->getOption('resourceKey') !== SnippetDocument::RESOURCE_KEY
+                || str_ends_with($view->getName(), '.edit') === false
             ) {
                 continue;
             }
             $result->add($viewBuilder);
         }
+
         return $result;
     }
-
-
 }
