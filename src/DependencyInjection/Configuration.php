@@ -26,7 +26,6 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('tabs')
                                 ->arrayPrototype()
                                     ->children()
-                                        ->scalarNode('name')->isRequired()->end()
                                         ->scalarNode('title')->isRequired()->end()
                                         ->scalarNode('form_key')->isRequired()->end()
                                         ->integerNode('order')->defaultValue(0)->end()

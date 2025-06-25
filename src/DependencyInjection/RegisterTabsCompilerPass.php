@@ -38,7 +38,7 @@ class RegisterTabsCompilerPass implements CompilerPassInterface
 
     /**
      * @return array<string, array{
-     *     parent_type: string,
+     *     snippet_type: string,
      *     tabs: array<string, array{
      *         title: string,
      *         form_key: string,
