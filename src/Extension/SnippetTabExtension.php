@@ -129,15 +129,15 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
 
     private function isResponsible(NodeInterface $node): bool
     {
-        if ($node->getProperty('jcr:mixinTypes')->getValue() !== ['sulu:snippet']) {
-            return false;
-        }
-
         if ($node->getParent()->getPath() !== '/cmf/snippets/' . $this->name) {
             return false;
         }
 
-        return true;
+        if(is_array($node->getProperty('jcr:mixinTypes')->getValue()) === false) {
+            return false;
+        }
+
+        return in_array('sulu:snippet', $node->getProperty('jcr:mixinTypes')->getValue()) === true;
     }
 
     /**
