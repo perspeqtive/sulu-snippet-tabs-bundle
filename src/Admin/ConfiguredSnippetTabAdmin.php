@@ -34,7 +34,8 @@ class ConfiguredSnippetTabAdmin extends Admin
         $editResourceCollection = $this->findAllEditResourceViews($viewCollection);
 
         $tabConfigCollection = $this->tabConfigCollectionProvider->getTabConfigCollection();
-        foreach($editResourceCollection as $resourceViewBuilder) {
+        /** @var ResourceTabViewBuilder $resourceViewBuilder */
+        foreach($editResourceCollection->all() as $resourceViewBuilder) {
             foreach($tabConfigCollection as $tabConfig) {
                 $viewCollection->add(
                     $this->addTabView($resourceViewBuilder, $tabConfig)

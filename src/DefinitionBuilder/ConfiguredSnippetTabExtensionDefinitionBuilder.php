@@ -17,8 +17,7 @@ class ConfiguredSnippetTabExtensionDefinitionBuilder
         $definition->setArgument('$formMetaDataLoader', $container->getDefinition('sulu_admin.xml_form_metadata_loader'));
         $definition->setArgument('$name', $snippetType);
         $definition->setArgument('$forms', $formKeys);
-        $definition->addTag('sulu.admin');
-        $definition->addTag('sulu.context', ['context' => 'admin']);
+        $definition->addTag('sulu.structure.extension');
         return $definition;
     }
 }

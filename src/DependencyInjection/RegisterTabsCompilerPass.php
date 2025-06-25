@@ -56,7 +56,7 @@ class RegisterTabsCompilerPass implements CompilerPassInterface
     {
         $formKeys = [];
         foreach ($typeConfiguration['tabs'] as $tabConfig) {
-            $formKeys[] = $tabConfig['formKey'];
+            $formKeys[] = $tabConfig['form_key'];
         }
         $this->addDefinitionForExtension($container, $typeConfiguration['snippet_type'], $formKeys);
     }
