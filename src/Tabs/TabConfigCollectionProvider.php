@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PERSPEQTIVE\SuluSnippetTabsBundle\Tabs;
 
-readonly class TabConfigCollectionProvider
+readonly class TabConfigCollectionProvider implements TabConfigCollectionProviderInterface
 {
     /**
      * @param array<string, array{

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PERSPEQTIVE\SuluSnippetTabsBundle\Admin;
 
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfig;
-use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfigCollectionProvider;
+use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfigCollectionProviderInterface;
 use Sulu\Bundle\AdminBundle\Admin\Admin;
 use Sulu\Bundle\AdminBundle\Admin\View\FormViewBuilderInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ResourceTabViewBuilder;
@@ -24,7 +24,7 @@ class ConfiguredSnippetTabAdmin extends Admin
     public function __construct(
         private readonly ViewBuilderFactoryInterface $viewBuilderFactory,
         private readonly SecurityCheckerInterface $securityChecker,
-        private readonly TabConfigCollectionProvider $tabConfigCollectionProvider,
+        private readonly TabConfigCollectionProviderInterface $tabConfigCollectionProvider,
     ) {
     }
 
@@ -48,7 +48,7 @@ class ConfiguredSnippetTabAdmin extends Admin
 
     private function addTabView(ResourceTabViewBuilder $viewBuilder, TabConfig $tabConfig): FormViewBuilderInterface
     {
-        $formView = $this->viewBuilderFactory->createFormViewBuilder($viewBuilder->getName() . '.' . $tabConfig->formKey, '/' . $tabConfig->getUrl());
+        $formView = $this->viewBuilderFactory->createFormViewBuilder($viewBuilder->getName() . '.' . $tabConfig->formKey, $tabConfig->getUrl());
 
         $formView->setResourceKey(SnippetDocument::RESOURCE_KEY)
                 ->setFormKey($tabConfig->formKey)
@@ -70,7 +70,10 @@ class ConfiguredSnippetTabAdmin extends Admin
             if (
                 $view->getType() !== ResourceTabViewBuilder::TYPE
                 || $view->getOption('resourceKey') !== SnippetDocument::RESOURCE_KEY
-                || str_ends_with($view->getName(), '.edit') === false
+                || (
+                    str_ends_with($view->getName(), '.edit') === false
+                    && str_ends_with($view->getName(), '.edit_form') === false
+                )
             ) {
                 continue;
             }
