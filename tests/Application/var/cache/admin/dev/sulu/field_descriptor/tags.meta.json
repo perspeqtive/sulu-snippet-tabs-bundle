@@ -1,0 +1,1 @@
+{"resources":[{"@type":"Symfony\\Component\\Config\\Resource\\FileResource","resource":"/var/www/html/vendor/sulu/sulu/src/Sulu/Bundle/TagBundle/Resources/config/lists/tags.xml"}]}

@@ -1,0 +1,1 @@
+{"resources":[{"@type":"Symfony\\Component\\Config\\Resource\\FileResource","resource":"/var/www/html/vendor/sulu/sulu/src/Sulu/Bundle/AudienceTargetingBundle/Resources/config/forms/target_group_details.xml"}]}
