@@ -23,7 +23,7 @@ Register it in your config/bundles.php:
 ```php
 return [
 // ...
-    Perspeqtive\SuluSnippetTabsBundle\PerspeqtiveSuluSnippetTabsBundle::class => ['all' => true],
+    PERSPEQTIVE\SuluSnippetTabsBundle\SuluSnippetTabsBundle::class => ['all' => true],
 ];
 ```
 
