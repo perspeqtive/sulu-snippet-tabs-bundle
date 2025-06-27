@@ -65,7 +65,7 @@ sulu_snippet_tabs:
 | configuration     |   yes    | 	Root node for defining snippet tab configurations.                                                             |
 | services / events |   yes    | 	You can define multiple snippet types (e.g. services, events). These are just keys for grouping.               |
 | snippet_type      |   yes    | 	The technical name of the snippet type that should receive these tabs (must match your snippet template type). |
-| tabs              |   yes    | 	The label displayed in the admin UI for the tab.                                                               |
+| title             |   yes    | 	The label displayed in the admin UI for the tab.                                                               |
 | form_key          |   yes    | The form key that links to a custom form definition (must exist in your form configurations).                   |
 | order             |   yes    | Controls the sort order of the tabs. Lower numbers appear first.                                                |
 
@@ -73,7 +73,7 @@ sulu_snippet_tabs:
 ## Create your custom forms
 The form_key must reference a form configuration that you define, following the [Sulu Admin Tabs Cookbook](https://docs.sulu.io/en/2.5/cookbook/add-admin-tabs.html.)
 
-⚠️*Important:* 
+⚠️ *Important:* 
 Properties inside the forms must use the naming pattern:
 
 ```
@@ -125,3 +125,7 @@ For reference, see this example from the Sulu docs — note how the property nam
 This ensures the data is correctly stored in your snippet’s `ext` field and is available in the output.
 
 ✅ That’s it! Once your configuration and forms are in place, the new tabs will automatically appear in the snippet edit view in the Sulu Admin.
+
+## 👩‍🍳 Contribution
+
+Please feel free to fork and extend existing or add new features and send a pull request with your changes! To establish a consistent code quality, please provide unit tests for all your changes and adapt the documentation.
