@@ -65,6 +65,7 @@ sulu_snippet_tabs:
 | configuration     |   yes    | 	Root node for defining snippet tab configurations.                                                             |
 | services / events |   yes    | 	You can define multiple snippet types (e.g. services, events). These are just keys for grouping.               |
 | snippet_type      |   yes    | 	The technical name of the snippet type that should receive these tabs (must match your snippet template type). |
+| tabs              |   yes    | 	The grouping of the tabs for the selected snippet type                                                         |
 | title             |   yes    | 	The label displayed in the admin UI for the tab.                                                               |
 | form_key          |   yes    | The form key that links to a custom form definition (must exist in your form configurations).                   |
 | order             |   yes    | Controls the sort order of the tabs. Lower numbers appear first.                                                |
