@@ -1,4 +1,5 @@
 # SuluSnippetTabsBundle
+![Packagist Version](https://img.shields.io/packagist/v/perspeqtive/sulu-snippet-tabs-bundle)
 
 The *Sulu Snippet Tabs Bundle* lets you easily add custom tabs to your snippets through a simple YAML configuration — no need to write custom admin extensions. This makes it straightforward to organize and extend your snippets with structured content.
 
