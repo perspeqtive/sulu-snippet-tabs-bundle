@@ -1,1 +1,0 @@
-{"resources":[{"@type":"Symfony\\Component\\Config\\Resource\\FileResource","resource":"/var/www/html/tests/Application/config/templates/pages/home.xml"},{"@type":"Symfony\\Component\\Config\\Resource\\FileResource","resource":"/var/www/html/tests/Application/config/templates/pages/page.xml"}]}
