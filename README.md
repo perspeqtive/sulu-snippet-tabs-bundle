@@ -1,7 +1,7 @@
 # SuluSnippetTabsBundle
 ![Packagist Version](https://img.shields.io/packagist/v/perspeqtive/sulu-snippet-tabs-bundle)
 
-The *Sulu Snippet Tabs Bundle* lets you easily add custom tabs to your snippets through a simple YAML configuration — no need to write custom admin extensions. This makes it straightforward to organize and extend your snippets with structured content.
+The **Sulu Snippet Tabs Bundle** lets you easily add custom tabs to your snippets through a simple YAML configuration — no need to write custom admin extensions. This makes it straightforward to organize and extend your snippets with structured content.
 
 ## 🚀 Features
 - Add custom tabs to snippet forms
@@ -62,11 +62,11 @@ sulu_snippet_tabs:
 ### Configuration keys explained:
 | config item       | required | Description                                                                                                     |
 |:------------------|:--------:|:----------------------------------------------------------------------------------------------------------------|
-| configuration     |   yes    | 	Root node for defining snippet tab configurations.                                                             |
-| services / events |   yes    | 	You can define multiple snippet types (e.g. services, events). These are just keys for grouping.               |
-| snippet_type      |   yes    | 	The technical name of the snippet type that should receive these tabs (must match your snippet template type). |
-| tabs              |   yes    | 	The grouping of the tabs for the selected snippet type                                                         |
-| title             |   yes    | 	The label displayed in the admin UI for the tab.                                                               |
+| configuration     |   yes    | Root node for defining snippet tab configurations.                                                              |
+| services / events |   yes    | You can define multiple snippet types (e.g. services, events). These are just keys for grouping.                |
+| snippet_type      |   yes    | The technical name of the snippet type that should receive these tabs (must match your snippet template type).  |
+| tabs              |   yes    | The grouping of the tabs for the selected snippet type                                                          |
+| title             |   yes    | The label displayed in the admin UI for the tab.                                                                |
 | form_key          |   yes    | The form key that links to a custom form definition (must exist in your form configurations).                   |
 | order             |   yes    | Controls the sort order of the tabs. Lower numbers appear first.                                                |
 
@@ -74,7 +74,7 @@ sulu_snippet_tabs:
 ## Create your custom forms
 The form_key must reference a form configuration that you define, following the [Sulu Admin Tabs Cookbook](https://docs.sulu.io/en/2.5/cookbook/add-admin-tabs.html.)
 
-⚠️ *Important:* 
+⚠️ **Important**: 
 Properties inside the forms must use the naming pattern:
 
 ```
@@ -125,7 +125,7 @@ For reference, see this example from the Sulu docs — note how the property nam
 ```
 This ensures the data is correctly stored in your snippet’s `ext` field and is available in the output.
 
-✅ That’s it! Once your configuration and forms are in place, the new tabs will automatically appear in the snippet edit view in the Sulu Admin.
+✅ **That’s it!** Once your configuration and forms are in place, the new tabs will automatically appear in the snippet edit view in the Sulu Admin.
 
 ## 👩‍🍳 Contribution
 
