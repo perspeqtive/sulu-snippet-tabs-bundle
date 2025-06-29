@@ -8,7 +8,6 @@ use PERSPEQTIVE\SuluSnippetTabsBundle\Admin\ConfiguredSnippetTabAdmin;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfig;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tests\Assert\AssertView;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tests\Mocks\MockTabConfigCollectionProvider;
-use PERSPEQTIVE\SuluSnippetTabsBundle\Tests\Mocks\Sulu\MockSecurityChecker;
 use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\AdminBundle\Admin\View\ResourceTabViewBuilderInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactory;
@@ -18,17 +17,14 @@ class ConfiguredSnippetTabAdminTest extends TestCase
 {
     private ConfiguredSnippetTabAdmin $admin;
     private ViewBuilderFactory $viewBuilderFactory;
-    private MockSecurityChecker $securityChecker;
     private MockTabConfigCollectionProvider $tabConfigCollectionProvider;
 
     protected function setUp(): void
     {
-        $this->securityChecker = new MockSecurityChecker();
         $this->viewBuilderFactory = new ViewBuilderFactory();
         $this->tabConfigCollectionProvider = new MockTabConfigCollectionProvider();
         $this->admin = new ConfiguredSnippetTabAdmin(
             $this->viewBuilderFactory,
-            $this->securityChecker,
             $this->tabConfigCollectionProvider,
         );
     }

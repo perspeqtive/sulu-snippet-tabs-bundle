@@ -16,6 +16,7 @@ use Sulu\Component\Content\Extension\ExportExtensionInterface;
 
 use function array_merge;
 use function basename;
+use function in_array;
 use function is_array;
 use function is_bool;
 use function is_string;
@@ -133,11 +134,11 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
             return false;
         }
 
-        if(is_array($node->getProperty('jcr:mixinTypes')->getValue()) === false) {
+        if (is_array($node->getProperty('jcr:mixinTypes')->getValue()) === false) {
             return false;
         }
 
-        return in_array('sulu:snippet', $node->getProperty('jcr:mixinTypes')->getValue()) === true;
+        return in_array('sulu:snippet', $node->getProperty('jcr:mixinTypes')->getValue(), true) === true;
     }
 
     /**

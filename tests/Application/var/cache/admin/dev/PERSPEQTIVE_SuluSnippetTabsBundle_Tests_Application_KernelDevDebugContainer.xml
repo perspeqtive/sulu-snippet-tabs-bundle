@@ -11730,7 +11730,6 @@
             <tag name="sulu.admin"/>
             <tag name="sulu.context" context="admin"/>
             <argument type="service" id="sulu_admin.view_builder_factory"/>
-            <argument type="service" id="sulu_security.security_checker"/>
             <argument type="service" id="perspeqtive_sulu_snippet_tabs.tabs.tab_config_collection_provider"/>
           </service>
         </argument>
@@ -19021,7 +19020,6 @@
       <tag name="sulu.admin"/>
       <tag name="sulu.context" context="admin"/>
       <argument type="service" id="sulu_admin.view_builder_factory"/>
-      <argument type="service" id="sulu_security.security_checker"/>
       <argument type="service" id="perspeqtive_sulu_snippet_tabs.tabs.tab_config_collection_provider"/>
     </service>
     <service id=".service_locator.pRu6x_4" class="Symfony\Component\DependencyInjection\ServiceLocator">
