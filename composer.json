@@ -1,6 +1,7 @@
 {
   "name": "perspeqtive/sulu-snippet-tabs-bundle",
   "description": "Organize snippet forms in tabs",
+  "type": "sulu-bundle",
   "license": "MIT",
   "authors": [
     {
