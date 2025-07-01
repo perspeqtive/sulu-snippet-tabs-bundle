@@ -3,6 +3,15 @@
 
 The **Sulu Snippet Tabs Bundle** lets you easily add custom tabs to your snippets through a simple YAML configuration — no need to write custom admin extensions. This makes it straightforward to organize and extend your snippets with structured content.
 
+<p style="display: flex; gap: 32px; justify-content: center;">
+    <a href="docs/custom-tab.png" target="_blank">
+        <img src="docs/custom-tab.png" style="border-radius: 3px;" alt="Custom tab">
+    </a>
+    <a href="docs/custom-tab-content.png" target="_blank">
+        <img src="docs/custom-tab-content.png" style="border-radius: 3px;" alt="Custom tab content">
+    </a>
+</p>
+
 ## 🚀 Features
 - Add custom tabs to snippet forms
 - Store additional structured data as extension content
