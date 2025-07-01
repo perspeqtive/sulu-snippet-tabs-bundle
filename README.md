@@ -72,7 +72,7 @@ sulu_snippet_tabs:
 
 
 ## Create your custom forms
-The form_key must reference a form configuration that you define, following the [Sulu Admin Tabs Cookbook](https://docs.sulu.io/en/2.5/cookbook/add-admin-tabs.html.)
+The form_key must reference a form configuration that you define, following the [Sulu Admin Tabs Cookbook](https://docs.sulu.io/en/2.5/cookbook/add-admin-tabs.html).
 
 ⚠️ **Important**: 
 Properties inside the forms must use the naming pattern:
