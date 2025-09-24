@@ -16,7 +16,7 @@ The **Sulu Snippet Tabs Bundle** lets you easily add custom tabs to your snippet
 - Add custom tabs to snippet forms
 - Store additional structured data as extension content
 - Configure tabs easily - no custom PHP code required
-- Integrates with [Sulu Snippet Manager Bundle](https://github.com/perspeqtive/sulu-snippet-tabs-bundle)
+- Integrates with [Sulu Snippet Manager Bundle](https://github.com/perspeqtive/sulu-snippet-manager-bundle)
 
 ## 🛠️ Installation
 ### Install the bundle via Composer:
