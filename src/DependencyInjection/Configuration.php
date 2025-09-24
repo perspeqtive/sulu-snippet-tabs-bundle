@@ -18,7 +18,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('configuration')
-                ->isRequired()
                     ->useAttributeAsKey('name')
                     ->arrayPrototype()
                         ->children()
@@ -34,6 +33,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
+                    ->defaultValue([])
                 ->end()
             ->end();
 
