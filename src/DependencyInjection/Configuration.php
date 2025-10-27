@@ -18,8 +18,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('configuration')
-                    ->isRequired(false)
-                    ->defaultValue([])
                     ->useAttributeAsKey('name')
                     ->arrayPrototype()
                         ->children()
