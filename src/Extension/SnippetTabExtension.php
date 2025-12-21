@@ -26,7 +26,6 @@ use function json_encode;
 
 class SnippetTabExtension extends AbstractExtension implements ExportExtensionInterface
 {
-
     /**
      * @var array<string,mixed>
      */
@@ -175,7 +174,7 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
                 $properties[] = $this->extractProperties($item->getItems());
                 continue;
             }
-            if($item instanceof FieldMetadata === false) {
+            if ($item instanceof FieldMetadata === false) {
                 continue;
             }
             $properties[] = [$this->extractPropertyName($item->getName())];
