@@ -10,6 +10,7 @@ use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FieldMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\FormMetadataLoaderInterface;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\ItemMetadata;
+use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\OptionMetadata;
 use Sulu\Bundle\AdminBundle\Metadata\FormMetadata\SectionMetadata;
 use Sulu\Component\Content\Extension\AbstractExtension;
 use Sulu\Component\Content\Extension\ExportExtensionInterface;
@@ -25,10 +26,11 @@ use function json_encode;
 
 class SnippetTabExtension extends AbstractExtension implements ExportExtensionInterface
 {
+
     /**
-     * @var string[]
+     * @var array<string,mixed>
      */
-    protected $properties = [];
+    protected array $defaultValues = [];
 
     /**
      * @param string[] $forms
@@ -43,7 +45,7 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
     }
 
     /**
-     * @param array<string|array|bool|int|float|null> $data
+     * @param array<mixed> $data
      */
     public function save(NodeInterface $node, $data, $webspaceKey, $languageCode): void
     {
@@ -61,6 +63,9 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
         }
     }
 
+    /**
+     * @return array<string,string|int|mixed>
+     */
     public function load(NodeInterface $node, $webspaceKey, $languageCode): array
     {
         if ($this->isResponsible($node) === false) {
@@ -69,7 +74,7 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
 
         $data = [];
         foreach ($this->getProperties($languageCode) as $name) {
-            $value = $this->loadProperty($node, $name);
+            $value = $this->loadProperty($node, $name, $this->defaultValues[$name] ?? '');
             $data[$name] = $this->sanitizeLoadedValue($value);
         }
 
@@ -170,7 +175,13 @@ class SnippetTabExtension extends AbstractExtension implements ExportExtensionIn
                 $properties[] = $this->extractProperties($item->getItems());
                 continue;
             }
+            if($item instanceof FieldMetadata === false) {
+                continue;
+            }
             $properties[] = [$this->extractPropertyName($item->getName())];
+            /** @var OptionMetadata[] $options */
+            $options = $item->getOptions();
+            $this->defaultValues[$this->extractPropertyName($item->getName())] = isset($options['default_value']) ? $options['default_value']->getValue() : '';
         }
 
         return array_merge(...$properties);

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<form xmlns="http://schemas.sulu.io/template/template"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/form-1.0.xsd"
+>
+    <key>car_extension</key>
+
+    <properties>
+        <section name="car-settings">
+            <meta>
+                <title>Car Settings</title>
+            </meta>
+            <properties>
+                <property name="ext/car_extension/position-logo" type="single_select" colspan="3">
+                    <meta>
+                        <title>Position Logo</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="bottom-left"/>
+                        <param name="values" type="collection">
+                            <param name="bottom-left">
+                                <meta>
+                                    <title>bottom left</title>
+                                </meta>
+                            </param>
+                            <param name="bottom-right">
+                                <meta>
+                                    <title>bottom left</title>
+                                </meta>
+                            </param>
+                            <param name="top-left">
+                                <meta>
+                                    <title>top left</title>
+                                </meta>
+                            </param>
+                            <param name="top-right">
+                                <meta>
+                                    <title>top right</title>
+                                </meta>
+                            </param>
+                        </param>
+                    </params>
+                </property>
+            </properties>
+        </section>
+    </properties>
+</form>

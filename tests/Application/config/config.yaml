@@ -22,7 +22,17 @@ sulu_snippet_tabs:
           title: catering
           form_key: events_catering
           order: 20
+    car:
+      snippet_type: 'car'
+      tabs:
+        settings:
+          title: settings
+          form_key: car_extension
+          order: 10
 
 doctrine:
   dbal: ~
   orm: ~
+
+framework:
+  test: true

@@ -44,6 +44,16 @@ class SuluSnippetTabsExtensionTest extends KernelTestCase
                     ],
                 ],
             ],
+            'car' => [
+                'snippet_type' => 'car',
+                'tabs' => [
+                    'settings' => [
+                        'title' => 'settings',
+                        'form_key' => 'car_extension',
+                        'order' => 10,
+                    ],
+                ],
+            ],
         ], $settings);
     }
 

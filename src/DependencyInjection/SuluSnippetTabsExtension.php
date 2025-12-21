@@ -14,6 +14,7 @@ class SuluSnippetTabsExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
+        /** @var array<string,array<string,mixed>> $config */
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('sulu_snippet_tabs.configuration', $config['configuration'] ?? []);
