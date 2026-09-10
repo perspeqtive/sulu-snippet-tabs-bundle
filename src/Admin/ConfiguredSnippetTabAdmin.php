@@ -12,7 +12,7 @@ use Sulu\Bundle\AdminBundle\Admin\View\ResourceTabViewBuilder;
 use Sulu\Bundle\AdminBundle\Admin\View\ToolbarAction;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
-use Sulu\Bundle\SnippetBundle\Document\SnippetDocument;
+use Sulu\Snippet\Domain\Model\SnippetInterface;
 
 use function str_ends_with;
 
@@ -43,7 +43,7 @@ class ConfiguredSnippetTabAdmin extends Admin
     {
         $formView = $this->viewBuilderFactory->createFormViewBuilder($viewBuilder->getName() . '.' . $tabConfig->formKey, $tabConfig->getUrl());
 
-        $formView->setResourceKey(SnippetDocument::RESOURCE_KEY)
+        $formView->setResourceKey(SnippetInterface::RESOURCE_KEY)
                 ->setFormKey($tabConfig->formKey)
                 ->setTabTitle($tabConfig->title)
                 ->setTabOrder($tabConfig->order)
@@ -62,7 +62,7 @@ class ConfiguredSnippetTabAdmin extends Admin
             $view = $viewBuilder->getView();
             if (
                 $view->getType() !== ResourceTabViewBuilder::TYPE
-                || $view->getOption('resourceKey') !== SnippetDocument::RESOURCE_KEY
+                || $view->getOption('resourceKey') !== SnippetInterface::RESOURCE_KEY
                 || (
                     str_ends_with($view->getName(), '.edit') === false
                     && str_ends_with($view->getName(), '.edit_form') === false

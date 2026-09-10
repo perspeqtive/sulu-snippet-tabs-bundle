@@ -4,16 +4,42 @@ declare(strict_types=1);
 
 namespace PERSPEQTIVE\SuluSnippetTabsBundle;
 
-use PERSPEQTIVE\SuluSnippetTabsBundle\DependencyInjection\RegisterTabsCompilerPass;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class SuluSnippetTabsBundle extends Bundle
+class SuluSnippetTabsBundle extends AbstractBundle
 {
-    public function build(ContainerBuilder $container): void
+    public function loadExtension(array $config, ContainerConfigurator $configurator, ContainerBuilder $container): void
     {
-        parent::build($container);
-        $container->addCompilerPass(new RegisterTabsCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
+        $configurator->import(__DIR__ . '/../config/services.yaml');
+
+        $configurator->parameters()->set('sulu_snippet_tabs.configuration', $config['configuration'] ?? []);
+    }
+
+    public function configure(DefinitionConfigurator $definition): void
+    {
+        $definition->rootNode()
+            ->children()
+                ->arrayNode('configuration')
+                    ->useAttributeAsKey('name')
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('snippet_type')->isRequired()->end()
+                            ->arrayNode('tabs')
+                                ->arrayPrototype()
+                                    ->children()
+                                        ->scalarNode('title')->isRequired()->end()
+                                        ->scalarNode('form_key')->isRequired()->end()
+                                        ->integerNode('order')->defaultValue(0)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->defaultValue([])
+                ->end()
+            ->end();
     }
 }

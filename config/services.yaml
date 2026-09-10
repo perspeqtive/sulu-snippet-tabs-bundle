@@ -1,0 +1,36 @@
+services:
+
+    perspeqtive_sulu_snippet_tabs.tabs.tab_config_collection_provider:
+        class: PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfigCollectionProvider
+        arguments:
+            $tabConfigs: "%sulu_snippet_tabs.configuration%"
+
+    perspeqtive_sulu_snippet_tabs.admin.configured_snippet_tab_admin:
+        class: PERSPEQTIVE\SuluSnippetTabsBundle\Admin\ConfiguredSnippetTabAdmin
+        arguments:
+            - "@sulu_admin.view_builder_factory"
+            - "@perspeqtive_sulu_snippet_tabs.tabs.tab_config_collection_provider"
+        tags:
+            - { name: "sulu.admin" }
+            - { name: "sulu.context", context: "admin" }
+
+    PERSPEQTIVE\SuluSnippetTabsBundle\Content\TabFormFieldProvider:
+        class: PERSPEQTIVE\SuluSnippetTabsBundle\Content\TabFormFieldProvider
+        arguments:
+            - "@perspeqtive_sulu_snippet_tabs.tabs.tab_config_collection_provider"
+            - "@sulu_admin.form_metadata_provider"
+
+    PERSPEQTIVE\SuluSnippetTabsBundle\Content\DataMapper:
+        class: PERSPEQTIVE\SuluSnippetTabsBundle\Content\DataMapper
+        arguments:
+            - "@PERSPEQTIVE\\SuluSnippetTabsBundle\\Content\\TabFormFieldProvider"
+        tags:
+            - { name: "sulu_content.data_mapper", priority: 64 }
+
+    PERSPEQTIVE\SuluSnippetTabsBundle\Content\Resolver:
+        class: PERSPEQTIVE\SuluSnippetTabsBundle\Content\Resolver
+        arguments:
+            - "@PERSPEQTIVE\\SuluSnippetTabsBundle\\Content\\TabFormFieldProvider"
+            - "@sulu_content.metadata_resolver"
+        tags:
+            - { name: "sulu_content.content_resolver", type: "snippetTabs" }
