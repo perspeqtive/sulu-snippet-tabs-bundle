@@ -7,12 +7,14 @@ namespace PERSPEQTIVE\SuluSnippetTabsBundle\Tests\Unit\Admin;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Admin\ConfiguredSnippetTabAdmin;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfig;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfigCollection;
+use PERSPEQTIVE\SuluSnippetTabsBundle\Tests\Unit\Mocks\MockSecurityChecker;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tests\Unit\Mocks\MockTabConfigCollectionProvider;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tests\Unit\Mocks\MockToolbarActionsBuilder;
 use PHPUnit\Framework\TestCase;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactory;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
+use Sulu\Component\Security\Authorization\PermissionTypes;
 use Sulu\Snippet\Domain\Model\SnippetInterface;
 
 use function array_keys;
@@ -23,6 +25,7 @@ class ConfiguredSnippetTabAdminTest extends TestCase
     private MockToolbarActionsBuilder $toolbarActionsBuilder;
     private ConfiguredSnippetTabAdmin $admin;
     private MockTabConfigCollectionProvider $tabConfigCollectionProvider;
+    private MockSecurityChecker $securityChecker;
 
     protected function setUp(): void
     {
@@ -32,10 +35,13 @@ class ConfiguredSnippetTabAdminTest extends TestCase
 
         $this->toolbarActionsBuilder = new MockToolbarActionsBuilder();
 
+        $this->securityChecker = new MockSecurityChecker();
+
         $this->admin = new ConfiguredSnippetTabAdmin(
             $this->viewBuilderFactory,
             $this->tabConfigCollectionProvider,
             $this->toolbarActionsBuilder,
+            $this->securityChecker,
         );
     }
 
@@ -140,6 +146,99 @@ class ConfiguredSnippetTabAdminTest extends TestCase
         self::assertNull($view->getParent());
         self::assertNull($view->getOption('formKey'));
         self::assertNull($view->getOption('toolbarActions'));
+    }
+
+    public function testConfigureViewsSkipsTabsWithoutEditPermission(): void
+    {
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 1', 'shop', 10, 'key_1'));
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 2', 'services', 20, 'key_2'));
+        $this->securityChecker->allowedSubjects = ['snippet_tabs.services_key_2'];
+
+        $viewCollection = new ViewCollection();
+        $viewCollection->add($this->buildResourceTabViewBuilder('snippet.edit_tabs', '/snippets/:id'));
+
+        $this->admin->configureViews($viewCollection);
+
+        self::assertSame(
+            ['snippet.edit_tabs', 'snippet.edit_tabs.key_2'],
+            array_keys($viewCollection->all()),
+        );
+    }
+
+    public function testConfigureViewsAddsNoTabViewWhenEveryPermissionIsDenied(): void
+    {
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 1', 'shop', 10, 'key_1'));
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 2', 'services', 20, 'key_2'));
+        $this->securityChecker->allowedSubjects = [];
+
+        $viewCollection = new ViewCollection();
+        $viewCollection->add($this->buildResourceTabViewBuilder('snippet.edit_tabs', '/snippets/:id'));
+
+        $this->admin->configureViews($viewCollection);
+
+        self::assertSame(['snippet.edit_tabs'], array_keys($viewCollection->all()));
+    }
+
+    public function testConfigureViewsChecksEditPermissionForEveryTabConfigAndResourceView(): void
+    {
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 1', 'shop', 10, 'key_1'));
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 2', 'services', 20, 'key_2'));
+
+        $viewCollection = new ViewCollection();
+        $viewCollection->add($this->buildResourceTabViewBuilder('snippet.edit_tabs', '/snippets/:id'));
+        $viewCollection->add($this->buildResourceTabViewBuilder('other_snippet.edit_tabs', '/other-snippets/:id'));
+
+        $this->admin->configureViews($viewCollection);
+
+        self::assertSame([
+            ['subject' => 'snippet_tabs.shop_key_1', 'permission' => PermissionTypes::EDIT],
+            ['subject' => 'snippet_tabs.services_key_2', 'permission' => PermissionTypes::EDIT],
+            ['subject' => 'snippet_tabs.shop_key_1', 'permission' => PermissionTypes::EDIT],
+            ['subject' => 'snippet_tabs.services_key_2', 'permission' => PermissionTypes::EDIT],
+        ], $this->securityChecker->calls);
+    }
+
+    public function testConfigureViewsChecksNoPermissionWithoutMatchingResourceView(): void
+    {
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 1', 'shop', 10, 'key_1'));
+
+        $this->admin->configureViews(new ViewCollection());
+
+        self::assertSame([], $this->securityChecker->calls);
+    }
+
+    public function testGetSecurityContextsReturnsAnEditContextPerTabConfig(): void
+    {
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 1', 'shop', 10, 'key_1'));
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 2', 'services', 20, 'key_2'));
+
+        self::assertSame([
+            'Sulu' => [
+                'Snippet Tabs' => [
+                    'snippet_tabs.shop_key_1' => [PermissionTypes::EDIT],
+                    'snippet_tabs.services_key_2' => [PermissionTypes::EDIT],
+                ],
+            ],
+        ], $this->admin->getSecurityContexts());
+    }
+
+    public function testGetSecurityContextsWithoutTabConfigs(): void
+    {
+        self::assertSame(['Sulu' => ['Snippet Tabs' => []]], $this->admin->getSecurityContexts());
+    }
+
+    public function testGetSecurityContextsDeduplicatesEqualContexts(): void
+    {
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Title 1', 'shop', 10, 'key_1'));
+        $this->tabConfigCollectionProvider->tabConfigCollection->add(new TabConfig('Other title', 'shop', 20, 'key_1'));
+
+        self::assertSame([
+            'Sulu' => [
+                'Snippet Tabs' => [
+                    'snippet_tabs.shop_key_1' => [PermissionTypes::EDIT],
+                ],
+            ],
+        ], $this->admin->getSecurityContexts());
     }
 
     private function buildResourceTabViewBuilder(

@@ -12,6 +12,7 @@ services:
             $viewBuilderFactory: '@sulu_admin.view_builder_factory'
             $tabConfigCollectionProvider: '@perspeqtive_sulu_snippet_tabs.tabs.tab_config_collection_provider'
             $toolbarActionsBuilder: '@PERSPEQTIVE\SuluSnippetTabsBundle\Admin\ToolbarActionsBuilder'
+            $securityChecker: '@sulu_security.security_checker'
         tags:
             - { name: 'sulu.admin' }
             - { name: 'sulu.context', context: 'admin' }
@@ -35,7 +36,7 @@ services:
             $tabFormFieldProvider: '@PERSPEQTIVE\SuluSnippetTabsBundle\Content\TabFormFieldProvider'
             $metadataResolver: '@sulu_content.metadata_resolver'
         tags:
-            - { name: 'sulu_content.content_resolver', type: 'snippetTabs' }
+            - { name: 'sulu_content.content_resolver', type: 'tabs' }
 
     PERSPEQTIVE\SuluSnippetTabsBundle\Admin\ToolbarActionsBuilder:
         class: PERSPEQTIVE\SuluSnippetTabsBundle\Admin\ToolbarActionsBuilder

@@ -94,7 +94,7 @@ class SuluSnippetTabsBundleTest extends TestCase
             $container->getDefinition(DataMapper::class)->getTag('sulu_content.data_mapper'),
         );
         self::assertSame(
-            [['type' => 'snippetTabs']],
+            [['type' => 'tabs']],
             $container->getDefinition(Resolver::class)->getTag('sulu_content.content_resolver'),
         );
     }

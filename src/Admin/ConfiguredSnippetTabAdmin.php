@@ -11,6 +11,8 @@ use Sulu\Bundle\AdminBundle\Admin\View\FormViewBuilderInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ResourceTabViewBuilder;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
+use Sulu\Component\Security\Authorization\PermissionTypes;
+use Sulu\Component\Security\Authorization\SecurityCheckerInterface;
 use Sulu\Snippet\Domain\Model\SnippetInterface;
 
 use function str_ends_with;
@@ -21,6 +23,7 @@ class ConfiguredSnippetTabAdmin extends Admin
         private readonly ViewBuilderFactoryInterface $viewBuilderFactory,
         private readonly TabConfigCollectionProviderInterface $tabConfigCollectionProvider,
         private readonly ToolbarActionsBuilderInterface $toolbarActionsBuilder,
+        private readonly SecurityCheckerInterface $securityChecker,
     ) {
     }
 
@@ -33,6 +36,10 @@ class ConfiguredSnippetTabAdmin extends Admin
         foreach ($editResourceCollection->all() as $resourceViewBuilder) {
             $toolbarActions = $this->toolbarActionsBuilder->getToolbarActions($viewCollection, $resourceViewBuilder->getName());
             foreach ($tabConfigCollection as $tabConfig) {
+                if ($this->securityChecker->hasPermission($this->buildSecurityContext($tabConfig), PermissionTypes::EDIT) === false) {
+                    continue;
+                }
+
                 $viewCollection->add(
                     $this->addTabView($resourceViewBuilder, $tabConfig, $toolbarActions),
                 );
@@ -72,5 +79,22 @@ class ConfiguredSnippetTabAdmin extends Admin
         }
 
         return $result;
+    }
+
+    public function getSecurityContexts(): array
+    {
+        $securityContext = [];
+        foreach ($this->tabConfigCollectionProvider->getTabConfigCollection() as $tabConfig) {
+            $securityContext[$this->buildSecurityContext($tabConfig)] = [
+                PermissionTypes::EDIT,
+            ];
+        }
+
+        return ['Sulu' => ['Snippet Tabs' => $securityContext]];
+    }
+
+    private function buildSecurityContext(TabConfig $tabConfig): string
+    {
+        return 'snippet_tabs.' . $tabConfig->snippetType . '_' . $tabConfig->formKey;
     }
 }
