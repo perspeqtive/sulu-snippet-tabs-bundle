@@ -1,7 +1,8 @@
 # SuluSnippetTabsBundle
-![Packagist Version](https://img.shields.io/packagist/v/perspeqtive/sulu-snippet-tabs-bundle)
+![compatibility](https://img.shields.io/badge/sulu%20compatibility-%3E=2.6%20&%20%3E3.0-52b6ca.svg)
 
-The **Sulu Snippet Tabs Bundle** lets you easily add custom tabs to your snippets through a simple YAML configuration — no need to write custom admin extensions. This makes it straightforward to organize and extend your snippets with structured content.
+The **Sulu Snippet Tabs Bundle** lets you easily add custom tabs to your snippets through a simple YAML configuration — no need to write custom admin extensions. This makes it straightforward to organize and extend your snippets with structured content. 
+This follows the paradigm configuration over code.
 
 <p style="display: flex; gap: 32px; justify-content: center;">
     <a href="docs/custom-tab.png" target="_blank">
@@ -84,6 +85,7 @@ sulu_snippet_tabs:
 The form_key must reference a form configuration that you define, following the [Sulu Admin Tabs Cookbook](https://docs.sulu.io/en/2.5/cookbook/add-admin-tabs.html).
 
 ⚠️ **Important**: 
+*For Sulu 2.6:*
 Properties inside the forms must use the naming pattern:
 
 ```
@@ -91,6 +93,15 @@ ext/{snippet_type}/{property_name}
 ```
 
 For reference, see this example from the Sulu docs — note how the property names follow the ext/ convention:
+
+*For Sulu 3.x:
+Properties should use the simple naming pattern:
+
+```
+{property_name}
+```
+
+Otherwise, the deeper nested values won't be resolved. 
 
 ```xml
 <?xml version="1.0" ?>
@@ -134,7 +145,7 @@ For reference, see this example from the Sulu docs — note how the property nam
 ```
 This ensures the data is correctly stored in your snippet’s `ext` field and is available in the output.
 
-✅ **That’s it!** Once your configuration and forms are in place, the new tabs will automatically appear in the snippet edit view in the Sulu Admin.
+✅ **That’s it!** Once your configuration and forms are in place, the new tabs will automatically appear in the snippet edit view in the Sulu Admin and you can access your saved content in Twig and anywhere as expected.
 
 ## 👩‍🍳 Contribution
 
