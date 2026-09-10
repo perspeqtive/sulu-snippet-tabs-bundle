@@ -7,13 +7,10 @@ namespace PERSPEQTIVE\SuluSnippetTabsBundle\Admin;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfig;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfigCollectionProviderInterface;
 use Sulu\Bundle\AdminBundle\Admin\Admin;
-use Sulu\Bundle\AdminBundle\Admin\View\DropdownToolbarAction;
 use Sulu\Bundle\AdminBundle\Admin\View\FormViewBuilderInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ResourceTabViewBuilder;
-use Sulu\Bundle\AdminBundle\Admin\View\ToolbarAction;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
-use Sulu\Bundle\AdminBundle\Exception\ViewNotFoundException;
 use Sulu\Snippet\Domain\Model\SnippetInterface;
 
 use function str_ends_with;
@@ -23,6 +20,7 @@ class ConfiguredSnippetTabAdmin extends Admin
     public function __construct(
         private readonly ViewBuilderFactoryInterface $viewBuilderFactory,
         private readonly TabConfigCollectionProviderInterface $tabConfigCollectionProvider,
+        private readonly ToolbarActionsBuilderInterface $toolbarActionsBuilder,
     ) {
     }
 
@@ -33,7 +31,7 @@ class ConfiguredSnippetTabAdmin extends Admin
         $tabConfigCollection = $this->tabConfigCollectionProvider->getTabConfigCollection();
         /** @var ResourceTabViewBuilder $resourceViewBuilder */
         foreach ($editResourceCollection->all() as $resourceViewBuilder) {
-            $toolbarActions = $this->getToolbarActions($viewCollection, $resourceViewBuilder->getName());
+            $toolbarActions = $this->toolbarActionsBuilder->getToolbarActions($viewCollection, $resourceViewBuilder->getName());
             foreach ($tabConfigCollection as $tabConfig) {
                 $viewCollection->add(
                     $this->addTabView($resourceViewBuilder, $tabConfig, $toolbarActions),
@@ -74,41 +72,5 @@ class ConfiguredSnippetTabAdmin extends Admin
         }
 
         return $result;
-    }
-
-    /**
-     * @return ToolbarAction[]
-     */
-    private function getToolbarActions(ViewCollection $viewCollection, string $resourceViewBuilderName): mixed
-    {
-        try {
-            $toolbarActions = $viewCollection->get($resourceViewBuilderName . '.content')->getView()->getOption('toolbarActions');
-        } catch (ViewNotFoundException) {
-            $toolbarActions = [];
-        }
-
-        if (empty($toolbarActions) === true) {
-            return [new ToolbarAction('sulu_admin.save')];
-        }
-
-        $allowedToolbarActions = [];
-
-        /** @var ToolbarAction $toolbarAction */
-        foreach ($toolbarActions as $toolbarAction) {
-            if ($toolbarAction->getType() === 'sulu_admin.type') {
-                continue;
-            }
-            if ($toolbarAction instanceof DropdownToolbarAction) {
-                $subActions = $toolbarAction->getOptions();
-                foreach ($subActions['toolbarActions'] ?? [] as $subAction) {
-                    if ($subAction->getType() === 'sulu_admin.delete') {
-                        continue 2;
-                    }
-                }
-            }
-            $allowedToolbarActions[] = $toolbarAction;
-        }
-
-        return $allowedToolbarActions;
     }
 }

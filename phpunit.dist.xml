@@ -18,10 +18,10 @@
     </testsuites>
     <source>
         <include>
-            <directory suffix=".php">.</directory>
+            <directory suffix=".php">src</directory>
         </include>
         <exclude>
-            <directory suffix=".php">tests</directory>
+            <directory>tests</directory>
             <directory>vendor</directory>
         </exclude>
     </source>

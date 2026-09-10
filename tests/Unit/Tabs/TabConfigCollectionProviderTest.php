@@ -8,14 +8,25 @@ use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfig;
 use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfigCollectionProvider;
 use PHPUnit\Framework\TestCase;
 
+use function iterator_to_array;
+
 class TabConfigCollectionProviderTest extends TestCase
 {
-    public function testGetTabConfigCollection(): void
+    public function testGetTabConfigCollectionWithoutConfig(): void
     {
         $tabConfigCollectionProvider = new TabConfigCollectionProvider([]);
         $tabConfigCollection = $tabConfigCollectionProvider->getTabConfigCollection();
 
-        $this->assertCount(0, $tabConfigCollection);
+        self::assertCount(0, $tabConfigCollection);
+    }
+
+    public function testGetTabConfigCollectionWithSnippetTypeWithoutTabs(): void
+    {
+        $tabConfigCollectionProvider = new TabConfigCollectionProvider([
+            'shop' => ['snippet_type' => 'shop', 'tabs' => []],
+        ]);
+
+        self::assertCount(0, $tabConfigCollectionProvider->getTabConfigCollection());
     }
 
     public function testGetTabConfigCollectionWithMultipleConfigs(): void
@@ -28,18 +39,18 @@ class TabConfigCollectionProviderTest extends TestCase
         ];
 
         $config = [
-            [
+            'shop' => [
                 'snippet_type' => 'shop',
                 'tabs' => [
-                    ['title' => 'config', 'form_key' => 'config', 'order' => 10],
-                    ['title' => 'business_hours', 'form_key' => 'business_hours', 'order' => 20],
+                    'config' => ['title' => 'config', 'form_key' => 'config', 'order' => 10],
+                    'business_hours' => ['title' => 'business_hours', 'form_key' => 'business_hours', 'order' => 20],
                 ],
             ],
-            [
+            'other' => [
                 'snippet_type' => 'other',
                 'tabs' => [
-                    ['title' => 'config', 'form_key' => 'config', 'order' => 10],
-                    ['title' => 'business_hours', 'form_key' => 'business_hours', 'order' => 10],
+                    'config' => ['title' => 'config', 'form_key' => 'config', 'order' => 10],
+                    'business_hours' => ['title' => 'business_hours', 'form_key' => 'business_hours', 'order' => 10],
                 ],
             ],
         ];
@@ -48,6 +59,24 @@ class TabConfigCollectionProviderTest extends TestCase
         $tabConfigCollection = $tabConfigCollectionProvider->getTabConfigCollection();
 
         self::assertCount(4, $tabConfigCollection);
-        self::assertEquals($expected, (array) $tabConfigCollection->getIterator());
+        self::assertEquals($expected, iterator_to_array($tabConfigCollection));
+    }
+
+    public function testGetTabConfigCollectionReturnsNewCollectionOnEachCall(): void
+    {
+        $tabConfigCollectionProvider = new TabConfigCollectionProvider([
+            'shop' => [
+                'snippet_type' => 'shop',
+                'tabs' => [
+                    'config' => ['title' => 'config', 'form_key' => 'config', 'order' => 10],
+                ],
+            ],
+        ]);
+
+        $first = $tabConfigCollectionProvider->getTabConfigCollection();
+        $second = $tabConfigCollectionProvider->getTabConfigCollection();
+
+        self::assertNotSame($first, $second);
+        self::assertEquals(iterator_to_array($first), iterator_to_array($second));
     }
 }
