@@ -16,6 +16,7 @@ This follows the paradigm configuration over code.
 ## 🚀 Features
 - Add custom tabs to snippet forms
 - Store additional structured data as extension content
+- Enable permission for your custom tabs
 - Configure tabs easily - no custom PHP code required
 - Integrates with [Sulu Snippet Manager Bundle](https://github.com/perspeqtive/sulu-snippet-manager-bundle)
 
@@ -85,7 +86,7 @@ sulu_snippet_tabs:
 The form_key must reference a form configuration that you define, following the [Sulu Admin Tabs Cookbook](https://docs.sulu.io/en/2.5/cookbook/add-admin-tabs.html).
 
 ⚠️ **Important**: 
-*For Sulu 2.6:*
+*For Sulu 2.6:*  
 Properties inside the forms must use the naming pattern:
 
 ```
@@ -94,7 +95,7 @@ ext/{snippet_type}/{property_name}
 
 For reference, see this example from the Sulu docs — note how the property names follow the ext/ convention:
 
-*For Sulu 3.x:
+*For Sulu 3.x:*  
 Properties should use the simple naming pattern:
 
 ```
@@ -144,6 +145,11 @@ Otherwise, the deeper nested values won't be resolved.
 </form>
 ```
 This ensures the data is correctly stored in your snippet’s `ext` field and is available in the output.
+
+## Enable permission for the tabs
+
+Sulu 3:  
+There will be a new section in the permissions configuration where you can enable the permission for each configured tab.
 
 ✅ **That’s it!** Once your configuration and forms are in place, the new tabs will automatically appear in the snippet edit view in the Sulu Admin and you can access your saved content in Twig and anywhere as expected.
 
