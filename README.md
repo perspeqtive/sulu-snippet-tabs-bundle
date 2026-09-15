@@ -1,5 +1,5 @@
 # SuluSnippetTabsBundle
-![compatibility](https://img.shields.io/badge/sulu%20compatibility-%3E=2.6%20&%20%3E3.0-52b6ca.svg)
+![Static Badge](https://img.shields.io/badge/sulu_compatibility-%5E2.6_%7C%7C_%5E3.0-DCE5E4?labelColor=112A46)
 
 The **Sulu Snippet Tabs Bundle** lets you easily add custom tabs to your snippets through a simple YAML configuration — no need to write custom admin extensions. This makes it straightforward to organize and extend your snippets with structured content. 
 This follows the paradigm configuration over code.
