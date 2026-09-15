@@ -9,6 +9,7 @@ use PERSPEQTIVE\SuluSnippetTabsBundle\Tabs\TabConfigCollectionProviderInterface;
 use Sulu\Bundle\AdminBundle\Admin\Admin;
 use Sulu\Bundle\AdminBundle\Admin\View\FormViewBuilderInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ResourceTabViewBuilder;
+use Sulu\Bundle\AdminBundle\Admin\View\ToolbarAction;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewBuilderFactoryInterface;
 use Sulu\Bundle\AdminBundle\Admin\View\ViewCollection;
 use Sulu\Component\Security\Authorization\PermissionTypes;
@@ -47,6 +48,9 @@ class ConfiguredSnippetTabAdmin extends Admin
         }
     }
 
+    /**
+     * @param ToolbarAction[] $toolbarActions
+     */
     private function addTabView(ResourceTabViewBuilder $viewBuilder, TabConfig $tabConfig, array $toolbarActions): FormViewBuilderInterface
     {
         $formView = $this->viewBuilderFactory->createFormViewBuilder($viewBuilder->getName() . '.' . $tabConfig->formKey, $tabConfig->getUrl());

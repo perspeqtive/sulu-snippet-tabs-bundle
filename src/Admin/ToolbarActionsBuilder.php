@@ -22,18 +22,23 @@ class ToolbarActionsBuilder implements ToolbarActionsBuilderInterface
         return $this->getAllowedToolbarActions($toolbarActions);
     }
 
+    /**
+     * @return array<string, ToolbarAction>
+     */
     public function getActionsFromMainFormContentView(ViewCollection $viewCollection, string $resourceViewBuilderName): array
     {
+        $toolbarActions = [];
         try {
-            return $viewCollection->get($resourceViewBuilderName . '.content')->getView()->getOption('toolbarActions') ?? [];
+            /** @var array<string, ToolbarAction> $toolbarActions */
+            $toolbarActions = $viewCollection->get($resourceViewBuilderName . '.content')->getView()->getOption('toolbarActions') ?? [];
         } catch (ViewNotFoundException) {
         }
 
-        return [];
+        return $toolbarActions;
     }
 
     /**
-     * @param ToolbarAction[] $toolbarActions
+     * @param array<string, ToolbarAction> $toolbarActions
      *
      * @return ToolbarAction[]
      */
@@ -46,6 +51,7 @@ class ToolbarActionsBuilder implements ToolbarActionsBuilderInterface
                 continue;
             }
             if ($toolbarAction instanceof DropdownToolbarAction) {
+                /** @var array{toolbarActions?: array<string,ToolbarAction>} $subActions */
                 $subActions = $toolbarAction->getOptions();
                 foreach ($subActions['toolbarActions'] ?? [] as $subAction) {
                     if ($subAction->getType() === 'sulu_admin.delete') {

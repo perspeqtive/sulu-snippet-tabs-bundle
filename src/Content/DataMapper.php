@@ -37,7 +37,7 @@ readonly class DataMapper implements DataMapperInterface
     }
 
     /**
-     * @return FieldMetadata[]
+     * @return array<string, FieldMetadata>
      */
     private function getFormFields(SnippetDimensionContentInterface $localizedDimensionContent): array
     {
@@ -54,6 +54,10 @@ readonly class DataMapper implements DataMapperInterface
         return $this->tabFormFieldProvider->getFields($snippetType, $locale);
     }
 
+    /**
+     * @param array<string, FieldMetadata> $fields
+     * @param array<string, mixed> $data
+     */
     private function processFormFields(
         SnippetDimensionContentInterface $localizedDimensionContent,
         SnippetDimensionContentInterface $unlocalizedDimensionContent,

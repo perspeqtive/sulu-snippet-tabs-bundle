@@ -45,6 +45,11 @@ readonly class TabFormFieldProvider
         return $fields;
     }
 
+    /**
+     * @param array<string, FieldMetadata> $fields
+     *
+     * @return array<string, FieldMetadata>
+     */
     private function getFieldsFromMetaData(FormMetadata $formMetadata, array $fields): array
     {
         foreach ($formMetadata->getFlatFieldMetadata() as $field) {
