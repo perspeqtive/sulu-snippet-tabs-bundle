@@ -10,4 +10,3 @@ parameters:
     excludePaths:
         - %currentWorkingDirectory%/vendor/*
         - %currentWorkingDirectory%/tests/*
-        - %currentWorkingDirectory%/src/DependencyInjection/Configuration.php
